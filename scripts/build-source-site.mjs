@@ -55,6 +55,7 @@ await writeJSON(path.join(distDir, "metadata.json"), {
 });
 
 await renderIndex(apps);
+await renderInstallPages(apps);
 
 console.log(`Built ${repository.apps.length} app(s) into ${relative(distDir)}`);
 console.log(`Source URL: ${sourceURL}`);
@@ -182,18 +183,104 @@ async function renderIndex(apps) {
   }
 
   const appCards = apps.map(renderAppCard).join("\n");
+  const firstInstall = firstInstallLinks(apps);
   const html = (await fs.readFile(indexPath, "utf8"))
     .replaceAll("%%SOURCE_NAME%%", escapeHTML(site.name || config.source?.name || "iOS Apps"))
     .replaceAll("%%SOURCE_DESCRIPTION%%", escapeHTML(site.description || "AltStore and SideStore source."))
     .replaceAll("%%SOURCE_URL%%", escapeHTML(sourceURL))
     .replaceAll("%%AVATAR_URL%%", escapeHTML(site.avatarURL || config.source?.iconURL || ""))
-    .replaceAll("%%ALTSTORE_URL%%", escapeHTML(altstoreSourceURL(sourceURL)))
-    .replaceAll("%%SIDESTORE_URL%%", escapeHTML(`sidestore://source?url=${encodeURIComponent(sourceURL)}`))
+    .replaceAll("%%ALTSTORE_URL%%", escapeHTML(firstInstall.altstore || sourceURL))
+    .replaceAll("%%SIDESTORE_URL%%", escapeHTML(firstInstall.sidestore || sourceURL))
     .replaceAll("%%GITHUB_URL%%", escapeHTML(site.githubURL || ""))
     .replaceAll("%%APP_COUNT%%", String(apps.length))
     .replaceAll("%%APP_CARDS%%", appCards);
 
   await fs.writeFile(indexPath, html);
+}
+
+async function renderInstallPages(apps) {
+  for (const app of apps) {
+    const latest = app.versions[0];
+    if (!latest?.downloadURL) {
+      continue;
+    }
+
+    await writeInstallPage({
+      app,
+      service: "altstore",
+      title: `Install ${app.name} with AltStore`,
+      badge: "badges/DownloadBadge_dark.png",
+      appURL: `altstore://install?url=${encodeURIComponent(latest.downloadURL)}`,
+      fallbackURL: latest.downloadURL
+    });
+
+    await writeInstallPage({
+      app,
+      service: "sidestore",
+      title: `Install ${app.name} with SideStore`,
+      badge: "badges/add-source-to-sidestore.png",
+      appURL: `sidestore://install?url=${encodeURIComponent(latest.downloadURL)}`,
+      fallbackURL: latest.downloadURL
+    });
+  }
+}
+
+async function writeInstallPage({ app, service, title, badge, appURL, fallbackURL }) {
+  const filePath = path.join(distDir, "install", service, `${app.bundleIdentifier}.html`);
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+  await fs.writeFile(
+    filePath,
+    `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${escapeHTML(title)}</title>
+    <meta http-equiv="refresh" content="0; url=${escapeAttribute(appURL)}">
+    <link rel="icon" href="${escapeAttribute(site.avatarURL || config.source?.iconURL || "")}">
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #f7f8fa;
+        color: #17202a;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(420px, calc(100% - 32px));
+        text-align: center;
+      }
+
+      img {
+        max-width: 245px;
+        width: 100%;
+        height: auto;
+      }
+
+      p {
+        color: #5d6978;
+      }
+
+      a {
+        color: #0d96f6;
+        font-weight: 650;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="${escapeAttribute(appURL)}"><img src="../../${escapeAttribute(badge)}" alt="${escapeAttribute(title)}"></a>
+      <p>If nothing opens, tap the badge again. You can also <a href="${escapeAttribute(fallbackURL)}">download the IPA</a>.</p>
+    </main>
+    <script>location.href = ${JSON.stringify(appURL)};</script>
+  </body>
+</html>
+`
+  );
 }
 
 function renderAppCard(app) {
@@ -230,8 +317,16 @@ function absoluteURL(value = "") {
   return `${baseURL}/${String(value).replace(/^\/+/, "")}`;
 }
 
-function altstoreSourceURL(value) {
-  return `altstore://source?url=${encodeURIComponent(value)}`;
+function firstInstallLinks(apps) {
+  const first = apps.find((app) => app.versions[0]?.downloadURL);
+  if (!first) {
+    return {};
+  }
+
+  return {
+    altstore: absoluteURL(`install/altstore/${first.bundleIdentifier}.html`),
+    sidestore: absoluteURL(`install/sidestore/${first.bundleIdentifier}.html`)
+  };
 }
 
 function copyIfPresent(target, source, key) {
