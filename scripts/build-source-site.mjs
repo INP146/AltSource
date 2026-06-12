@@ -186,6 +186,7 @@ async function renderIndex(apps) {
     .replaceAll("%%SOURCE_NAME%%", escapeHTML(site.name || config.source?.name || "iOS Apps"))
     .replaceAll("%%SOURCE_DESCRIPTION%%", escapeHTML(site.description || "AltStore and SideStore source."))
     .replaceAll("%%SOURCE_URL%%", escapeHTML(sourceURL))
+    .replaceAll("%%AVATAR_URL%%", escapeHTML(site.avatarURL || config.source?.iconURL || ""))
     .replaceAll("%%ALTSTORE_URL%%", escapeHTML(altstoreSourceURL(sourceURL)))
     .replaceAll("%%SIDESTORE_URL%%", escapeHTML(`sidestore://source?url=${encodeURIComponent(sourceURL)}`))
     .replaceAll("%%GITHUB_URL%%", escapeHTML(site.githubURL || ""))

@@ -3,11 +3,13 @@
     "name": "INP146 AltSource",
     "description": "A shared AltStore and SideStore source for @INP146 iOS apps.",
     "baseURL": "https://INP146.github.io/AltSource",
-    "githubURL": "https://github.com/INP146/AltSource"
+    "githubURL": "https://github.com/INP146/AltSource",
+    "avatarURL": "https://github.com/INP146.png"
   },
   "source": {
     "name": "INP146",
-    "identifier": "io.github.inp146"
+    "identifier": "io.github.inp146",
+    "iconURL": "https://github.com/INP146.png"
   },
   "defaults": {
     "developerName": "INP146",
