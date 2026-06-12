@@ -52,6 +52,10 @@ In repository settings:
 2. Set Source to GitHub Actions.
 3. Run the `Deploy iOS Source` workflow.
 
+If the workflow fails at `actions/configure-pages` with `Get Pages site failed`,
+Pages has not been enabled for the repository yet. Complete steps 1 and 2 above,
+then rerun the workflow.
+
 For this repository, the default source URL will be:
 
 ```text
