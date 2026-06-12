@@ -1,0 +1,44 @@
+{
+  "site": {
+    "name": "INP146 AltSource",
+    "description": "A shared AltStore and SideStore source for @INP146 iOS apps.",
+    "baseURL": "https://INP146.github.io/AltSource",
+    "githubURL": "https://github.com/INP146/AltSource"
+  },
+  "source": {
+    "name": "INP146",
+    "identifier": "io.github.inp146"
+  },
+  "defaults": {
+    "developerName": "INP146",
+    "includePrereleases": false,
+    "maxVersions": 10
+  },
+  "staticAssets": [
+    {
+      "from": "assets/icons/savex.png",
+      "to": "icons/savex.png"
+    },
+    {
+      "from": "assets/badges",
+      "to": "badges"
+    }
+  ],
+  "apps": [
+    {
+      "name": "SaveX",
+      "bundleIdentifier": "com.savex",
+      "githubOwner": "INP146",
+      "githubRepository": "SaveX",
+      "assetNamePattern": "^SaveX-v.*-unsigned\\.ipa$",
+      "developerName": "INP146",
+      "subtitle": "Twitter/X video downloader",
+      "localizedDescription": "SaveX is an iOS SwiftUI app for downloading videos from public Twitter/X posts to local storage and attempting to save them to the system Photos library.",
+      "iconPath": "icons/savex.png",
+      "tintColor": "0D96F6",
+      "minOSVersion": "26.0",
+      "maxVersions": 10
+    }
+  ],
+  "news": []
+}

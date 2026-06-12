@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>%%SOURCE_NAME%%</title>
+    <meta name="description" content="%%SOURCE_DESCRIPTION%%">
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fa;
+        --panel: #ffffff;
+        --text: #17202a;
+        --muted: #5d6978;
+        --line: #d8dee8;
+        --accent: #0d96f6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      main {
+        width: min(960px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0;
+      }
+
+      header {
+        display: grid;
+        gap: 20px;
+        padding: 28px 0 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .lede {
+        max-width: 680px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .actions img {
+        display: block;
+        height: 56px;
+        width: auto;
+      }
+
+      .source-url {
+        display: block;
+        width: 100%;
+        margin-top: 4px;
+        padding: 12px 14px;
+        overflow-wrap: anywhere;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+
+      section {
+        padding: 26px 0 0;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: 1rem;
+        text-transform: uppercase;
+        color: var(--muted);
+        letter-spacing: 0;
+      }
+
+      .section-heading a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 650;
+      }
+
+      .app-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .app-card {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .app-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 16px;
+      }
+
+      .app-info {
+        min-width: 0;
+      }
+
+      .app-info h2 {
+        margin: 0 0 4px;
+        font-size: 1.1rem;
+      }
+
+      .app-info p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .meta span {
+        padding: 3px 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fbfcfe;
+      }
+
+      @media (max-width: 560px) {
+        main {
+          width: min(100% - 24px, 960px);
+          padding-top: 24px;
+        }
+
+        .actions img {
+          height: 48px;
+        }
+
+        .app-card {
+          grid-template-columns: 56px minmax(0, 1fr);
+          padding: 14px;
+        }
+
+        .app-icon {
+          width: 56px;
+          height: 56px;
+          border-radius: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>%%SOURCE_NAME%%</h1>
+          <p class="lede">%%SOURCE_DESCRIPTION%%</p>
+        </div>
+        <div class="actions" aria-label="Install source">
+          <a href="%%ALTSTORE_URL%%">
+            <img src="badges/DownloadBadge_dark.png" alt="Download on AltStore">
+          </a>
+          <a href="%%SIDESTORE_URL%%">
+            <img src="badges/add-source-to-sidestore.svg" alt="Add Source to SideStore">
+          </a>
+        </div>
+        <a class="source-url" href="%%SOURCE_URL%%">%%SOURCE_URL%%</a>
+      </header>
+
+      <section aria-labelledby="apps-title">
+        <div class="section-heading">
+          <h2 id="apps-title">Apps (%%APP_COUNT%%)</h2>
+          <a href="%%GITHUB_URL%%">GitHub</a>
+        </div>
+        <div class="app-list">
+%%APP_CARDS%%
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

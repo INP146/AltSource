@@ -1,0 +1,9 @@
+# Generated source site.
+dist/
+
+# Dependencies and local caches.
+node_modules/
+.npm/
+
+# macOS metadata.
+.DS_Store

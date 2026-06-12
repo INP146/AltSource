@@ -1,0 +1,11 @@
+/source.json
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+
+/apps.json
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8
+
+/metadata.json
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json; charset=utf-8

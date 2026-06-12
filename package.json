@@ -1,0 +1,13 @@
+{
+  "name": "inp146-altsource",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-source-site.mjs",
+    "build:source": "node scripts/build-source-site.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
