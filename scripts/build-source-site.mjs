@@ -231,8 +231,7 @@ function absoluteURL(value = "") {
 }
 
 function altstoreSourceURL(value) {
-  const url = new URL(value);
-  return `https://altstore.io/source/${url.host}${url.pathname}${url.search}`;
+  return `altstore://source?url=${encodeURIComponent(value)}`;
 }
 
 function copyIfPresent(target, source, key) {
