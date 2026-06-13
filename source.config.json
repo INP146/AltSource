@@ -29,7 +29,7 @@
   "apps": [
     {
       "name": "SaveX",
-      "bundleIdentifier": "com.savex",
+      "bundleIdentifier": "io.github.inp146.savex",
       "githubOwner": "INP146",
       "githubRepository": "SaveX",
       "assetNamePattern": "^SaveX-v.*-unsigned\\.ipa$",
