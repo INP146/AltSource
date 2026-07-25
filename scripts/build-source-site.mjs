@@ -163,8 +163,13 @@ async function copyStaticAsset(asset) {
 
   const source = path.resolve(rootDir, asset.from);
   const target = path.resolve(distDir, asset.to);
+  const targetRelativeToDist = path.relative(distDir, target);
 
-  if (!target.startsWith(distDir)) {
+  if (
+    targetRelativeToDist === ".." ||
+    targetRelativeToDist.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(targetRelativeToDist)
+  ) {
     throw new Error(`Refusing to copy outside dist: ${asset.to}`);
   }
 
