@@ -1,6 +1,6 @@
 # iOS Source Deployment
 
-This directory can be deployed as a static AltStore / SideStore source.
+This repository can be deployed as a static AltStore / SideStore source.
 
 ## How it works
 
@@ -28,7 +28,7 @@ Add another object to `source.config.json`:
 }
 ```
 
-Then add the icon to `staticAssets`, or use a public `iconURL`.
+Then add the icon under `assets/` and add a matching entry to `staticAssets`, or use a public `iconURL`.
 
 ## Build locally
 
@@ -84,7 +84,7 @@ is better for the source JSON because app icons and screenshots need stable abso
 AltStore source link:
 
 ```text
-https://altstore.io/source/INP146.github.io/AltSource/source.json
+altstore://source?url=https%3A%2F%2FINP146.github.io%2FAltSource%2Fsource.json
 ```
 
 SideStore source link:
