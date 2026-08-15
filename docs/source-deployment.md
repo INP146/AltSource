@@ -30,6 +30,15 @@ Add another object to `source.config.json`:
 
 Then add the icon under `assets/` and add a matching entry to `staticAssets`, or use a public `iconURL`.
 
+`iconPath` is the destination path under `dist/`, not the source path in the repository. For example, pair `"iconPath": "icons/another-app.png"` with:
+
+```json
+{
+  "from": "assets/icons/another-app.png",
+  "to": "icons/another-app.png"
+}
+```
+
 ## Build locally
 
 ```bash
