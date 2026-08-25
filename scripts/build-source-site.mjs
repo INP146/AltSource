@@ -74,6 +74,9 @@ async function buildApp(appConfig) {
     if (!includePrereleases && release.prerelease) {
       continue;
     }
+    if (!release.tag_name) {
+      continue;
+    }
 
     const asset = selectIPAAsset(appConfig, release.assets || []);
     if (!asset) {
