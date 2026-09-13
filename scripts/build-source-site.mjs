@@ -203,14 +203,17 @@ async function renderIndex(apps) {
   }
 
   const appCards = apps.map(renderAppCard).join("\n");
-  const firstInstall = firstInstallLinks(apps);
+  const sourceLinks = {
+    altstore: `altstore://source?url=${encodeURIComponent(sourceURL)}`,
+    sidestore: `sidestore://source?url=${encodeURIComponent(sourceURL)}`
+  };
   const html = (await fs.readFile(indexPath, "utf8"))
     .replaceAll("%%SOURCE_NAME%%", escapeHTML(site.name || config.source?.name || "iOS Apps"))
     .replaceAll("%%SOURCE_DESCRIPTION%%", escapeHTML(site.description || "AltStore and SideStore source."))
     .replaceAll("%%SOURCE_URL%%", escapeHTML(sourceURL))
     .replaceAll("%%AVATAR_URL%%", escapeHTML(site.avatarURL || config.source?.iconURL || ""))
-    .replaceAll("%%ALTSTORE_URL%%", escapeHTML(firstInstall.altstore || sourceURL))
-    .replaceAll("%%SIDESTORE_URL%%", escapeHTML(firstInstall.sidestore || sourceURL))
+    .replaceAll("%%ALTSTORE_URL%%", escapeHTML(sourceLinks.altstore))
+    .replaceAll("%%SIDESTORE_URL%%", escapeHTML(sourceLinks.sidestore))
     .replaceAll("%%GITHUB_URL%%", escapeHTML(site.githubURL || ""))
     .replaceAll("%%APP_COUNT%%", String(apps.length))
     .replaceAll("%%APP_CARDS%%", appCards);
@@ -335,18 +338,6 @@ function absoluteURL(value = "") {
     return value;
   }
   return `${baseURL}/${String(value).replace(/^\/+/, "")}`;
-}
-
-function firstInstallLinks(apps) {
-  const first = apps.find((app) => app.versions[0]?.downloadURL);
-  if (!first) {
-    return {};
-  }
-
-  return {
-    altstore: absoluteURL(`install/altstore/${first.bundleIdentifier}.html`),
-    sidestore: absoluteURL(`install/sidestore/${first.bundleIdentifier}.html`)
-  };
 }
 
 function copyIfPresent(target, source, key) {
