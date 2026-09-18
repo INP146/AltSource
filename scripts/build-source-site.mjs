@@ -16,9 +16,15 @@ const baseURL = normalizeBaseURL(
     site.baseURL ||
     "http://localhost:8080"
 );
-const sourceFileName = config.sourceFileName || "source.json";
-if (path.basename(sourceFileName) !== sourceFileName || sourceFileName === "." || sourceFileName === "..") {
-  throw new Error("sourceFileName must be a file name without directory components.");
+const sourceFileName = config.sourceFileName ?? "source.json";
+if (
+  typeof sourceFileName !== "string" ||
+  sourceFileName.length === 0 ||
+  path.basename(sourceFileName) !== sourceFileName ||
+  sourceFileName === "." ||
+  sourceFileName === ".."
+) {
+  throw new Error("sourceFileName must be a non-empty file name without directory components.");
 }
 const sourceURL = absoluteURL(sourceFileName);
 
