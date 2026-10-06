@@ -26,7 +26,7 @@ if (
 ) {
   throw new Error("sourceFileName must be a non-empty file name without directory components.");
 }
-const sourceURL = absoluteURL(sourceFileName);
+const sourceURL = absoluteURL(encodeURIComponent(sourceFileName));
 
 await fs.rm(distDir, { recursive: true, force: true });
 await fs.mkdir(distDir, { recursive: true });
