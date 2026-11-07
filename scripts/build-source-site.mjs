@@ -214,8 +214,8 @@ async function renderIndex(apps) {
     sidestore: `sidestore://source?url=${encodeURIComponent(sourceURL)}`
   };
   const html = (await fs.readFile(indexPath, "utf8"))
-    .replaceAll("%%SOURCE_NAME%%", escapeHTML(site.name || config.source?.name || "iOS Apps"))
-    .replaceAll("%%SOURCE_DESCRIPTION%%", escapeHTML(site.description || "AltStore and SideStore source."))
+    .replaceAll("%%SOURCE_NAME%%", () => escapeHTML(site.name || config.source?.name || "iOS Apps"))
+    .replaceAll("%%SOURCE_DESCRIPTION%%", () => escapeHTML(site.description || "AltStore and SideStore source."))
     .replaceAll("%%SOURCE_URL%%", escapeHTML(sourceURL))
     .replaceAll("%%AVATAR_URL%%", escapeHTML(site.avatarURL || config.source?.iconURL || ""))
     .replaceAll("%%ALTSTORE_URL%%", escapeHTML(sourceLinks.altstore))
