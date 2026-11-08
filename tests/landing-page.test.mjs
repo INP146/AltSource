@@ -17,6 +17,22 @@ test("landing page escapes configured text rather than injecting markup", async 
   });
 });
 
+for (const { label, config, expectedName } of [
+  { label: "default name", config: {}, expectedName: "iOS Apps" },
+  { label: "source name fallback", config: { site: { name: "" }, source: { name: "Apps & Tools" } }, expectedName: "Apps &amp; Tools" },
+  { label: "site name precedence", config: { site: { name: "My Site" }, source: { name: "Other Source" } }, expectedName: "My Site" },
+]) {
+  test(`landing page uses ${label} when rendering its heading and title`, async () => {
+    await withBuilder(config, async (result, dir) => {
+      assert.equal(result.status, 0, result.stderr);
+      const html = await fs.readFile(path.join(dir, "dist/index.html"), "utf8");
+      assert.ok(html.includes(`<title>${expectedName}</title>`));
+      assert.ok(html.includes(`<h1>${expectedName}</h1>`));
+      assert.ok(html.includes('<p class="lede">AltStore and SideStore source.</p>'));
+    });
+  });
+}
+
 test("landing page preserves dollar replacement tokens in configured text", async () => {
   const text = "Price $$5; literal $&; prefix $`";
   const escaped = "Price $$5; literal $&amp;; prefix $`";
