@@ -14,6 +14,26 @@ test("source URL encodes reserved characters in the configured filename", async 
   });
 });
 
+test("Unicode source filenames round-trip through output and store links", async () => {
+  const sourceFileName = "应用源📱.json";
+  await withBuilder({ site: { baseURL: "https://example.test/apps/" }, sourceFileName }, async (result, dir) => {
+    assert.equal(result.status, 0, result.stderr);
+    const source = JSON.parse(await fs.readFile(path.join(dir, "dist", sourceFileName), "utf8"));
+    assert.deepEqual(source.apps, []);
+    const metadata = JSON.parse(await fs.readFile(path.join(dir, "dist/metadata.json"), "utf8"));
+    const sourceURL = `https://example.test/apps/${encodeURIComponent(sourceFileName)}`;
+    assert.equal(metadata.site.sourceURL, sourceURL);
+    assert.equal(decodeURIComponent(new URL(sourceURL).pathname), `/apps/${sourceFileName}`);
+    const html = await fs.readFile(path.join(dir, "dist/index.html"), "utf8");
+    assert.ok(html.includes(`href="${sourceURL}"`));
+    for (const service of ["altstore", "sidestore"]) {
+      const match = html.match(new RegExp(`href="(${service}://source\\?url=[^"]+)"`));
+      assert.ok(match, `${service} source link is rendered`);
+      assert.equal(new URL(match[1]).searchParams.get("url"), sourceURL);
+    }
+  });
+});
+
 test("store links preserve reserved filename characters through nested URL encoding", async () => {
   await withBuilder({ site: { baseURL: "https://example.test/apps/" }, sourceFileName: "my source#1%.json" }, async (result, dir) => {
     assert.equal(result.status, 0, result.stderr);
