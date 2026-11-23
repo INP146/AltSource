@@ -41,15 +41,19 @@ Then add the icon under `assets/` and add a matching entry to `staticAssets`, or
 
 ## Build locally
 
+Run these commands from the repository root with Node.js 20 or later:
+
 ```bash
+npm test
 npm run build
 ```
 
-The source file will be available at:
+`npm test` runs the builder against temporary fixtures without contacting GitHub
+or changing your local `dist/`. The build fetches the configured GitHub Releases
+and recreates `dist/`, so keep hand-edited files out of that directory.
 
-```text
-dist/source.json
-```
+The default source file is `dist/source.json`. `dist/apps.json` contains the same
+source data, and `dist/metadata.json` contains a summary of the site and apps.
 
 ## GitHub Pages
 
